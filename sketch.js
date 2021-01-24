@@ -1,7 +1,7 @@
 const triangles = [];
 const circles = [];
 const semiCircles = [];
-var myCanvas;
+var myCanvas, r1 = 0, r2 = 0, r3 = 0;
 
 function preload() {
   loader('T', 10);
@@ -42,13 +42,13 @@ function setup() {
   //Create Button to randomize
   randButton = createButton('Random');
   randButton.size(100, 50);
-  randButton.position(windowWidth/2+50, windowHeight/2+250);
+  randButton.position(windowWidth/2+25, windowHeight/2+250);
   randButton.mousePressed(changeLogo);
 
   //Create Button to save
   saveButton = createButton('Save');
   saveButton.size(100, 50);
-  saveButton.position(windowWidth/2-150, windowHeight/2+250);
+  saveButton.position(windowWidth/2-125, windowHeight/2+250);
   saveButton.mousePressed(saveLogo);
 }
 
@@ -70,10 +70,14 @@ function loader(name, num){
 function changeLogo(){
   clear();
 
+  r1 = floor(random(10));
+  r2 = floor(random(10));
+  r3 = floor(random(10));
+
   //Create Logo
-  image(circles[floor(random(10))], 250, 250, 300, 300);
-  image(triangles[floor(random(10))], 250, 250, 300, 300);
-  image(semiCircles[floor(random(10))], 250, 250, 300, 300);
+  image(circles[r1], 250, 250, 300, 300);
+  image(triangles[r2], 250, 250, 300, 300);
+  image(semiCircles[r3], 250, 250, 300, 300);
   image(logoName, 250, 250, 300, 300);
 
   //Add Coordinates
@@ -94,5 +98,37 @@ function saveLogo(){
 }
 
 function windowResized() {
-    resizeCanvas(500, 500); 
+    clear();
+    randButton.remove();
+    saveButton.remove();
+
+    //Create Logo
+    image(circles[r1], 250, 250, 300, 300);
+    image(triangles[r2], 250, 250, 300, 300);
+    image(semiCircles[r3], 250, 250, 300, 300);
+    image(logoName, 250, 250, 300, 300);
+
+    //Add Coordinates
+    textFont(folio);
+    push();
+    rotate(-90);
+    textSize(13);
+    text('45.4681388', -250-150, 250-160);
+    textAlign(CENTER);
+    text('9.2147358 ', -250, 250-160);
+    textAlign(RIGHT);
+    text('124', -250+150, 250-160);
+    pop();
+
+    //Create Button to randomize
+    randButton = createButton('Random');
+    randButton.size(100, 50);
+    randButton.position(windowWidth/2+25, windowHeight/2+250);
+    randButton.mousePressed(changeLogo);
+
+    //Create Button to save
+    saveButton = createButton('Save');
+    saveButton.size(100, 50);
+    saveButton.position(windowWidth/2-125, windowHeight/2+250);
+    saveButton.mousePressed(saveLogo);
 }

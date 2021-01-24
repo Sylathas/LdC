@@ -1,6 +1,7 @@
 const triangles = [];
 const circles = [];
 const semiCircles = [];
+var myCanvas;
 
 function preload() {
   loader('T', 10);
@@ -11,7 +12,8 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(windowWidth,windowHeight);
+  myCanvas = createCanvas(500 ,500);
+  myCanvas.parent("logo");
   //Create Grid
   rectMode(CENTER);
   //rect(windowWidth/2,windowHeight/2,150,150);
@@ -19,29 +21,35 @@ function setup() {
   //Create Logo
   imageMode(CENTER);
   angleMode(DEGREES);
-  image(circles[0], windowWidth/2, windowHeight/2, 300, 300);
-  image(triangles[0], windowWidth/2, windowHeight/2, 300, 300);
-  image(semiCircles[0], windowWidth/2, windowHeight/2, 300, 300);
-  image(logoName, windowWidth/2, windowHeight/2, 300, 300);
+  image(circles[0], 250, 250, 300, 300);
+  image(triangles[0], 250, 250, 300, 300);
+  image(semiCircles[0], 250, 250, 300, 300);
+  image(logoName, 250, 250, 300, 300);
 
   //Add Coordinates
   textFont(folio);
   push();
   rotate(-90);
   textSize(13);
-  text('45.4681388', -windowHeight/2-150, windowWidth/2-160);
+  text('45.4681388', -250-150, 250-160);
   textAlign(CENTER);
-  text('9.2147358 ', -windowHeight/2, windowWidth/2-160);
+  text('9.2147358 ', -250, 250-160);
   textAlign(RIGHT);
-  text('124', -windowHeight/2+150, windowWidth/2-160);
+  text('124', -250+150, 250-160);
   pop();
 
 
-  //Create Button
-  button = createButton('Random');
-  button.size(100, 50);
-  button.position(windowWidth/2-50, windowHeight/2+250);
-  button.mousePressed(changeLogo);
+  //Create Button to randomize
+  randButton = createButton('Random');
+  randButton.size(100, 50);
+  randButton.position(windowWidth/2+50, windowHeight/2+250);
+  randButton.mousePressed(changeLogo);
+
+  //Create Button to save
+  saveButton = createButton('Save');
+  saveButton.size(100, 50);
+  saveButton.position(windowWidth/2-150, windowHeight/2+250);
+  saveButton.mousePressed(saveLogo);
 }
 
 function draw() {
@@ -63,20 +71,28 @@ function changeLogo(){
   clear();
 
   //Create Logo
-  image(circles[floor(random(10))], windowWidth/2, windowHeight/2, 300, 300);
-  image(triangles[floor(random(10))], windowWidth/2, windowHeight/2, 300, 300);
-  image(semiCircles[floor(random(10))], windowWidth/2, windowHeight/2, 300, 300);
-  image(logoName, windowWidth/2, windowHeight/2, 300, 300);
+  image(circles[floor(random(10))], 250, 250, 300, 300);
+  image(triangles[floor(random(10))], 250, 250, 300, 300);
+  image(semiCircles[floor(random(10))], 250, 250, 300, 300);
+  image(logoName, 250, 250, 300, 300);
 
   //Add Coordinates
   textFont(folio);
   push();
   rotate(-90);
   textSize(13);
-  text('45.4681388', -windowHeight/2-150, windowWidth/2-160);
+  text('45.4681388', -250-150, 250-160);
   textAlign(CENTER);
-  text('9.2147358 ', -windowHeight/2, windowWidth/2-160);
+  text('9.2147358 ', -250, 250-160);
   textAlign(RIGHT);
-  text('124', -windowHeight/2+150, windowWidth/2-160);
+  text('124', -250+150, 250-160);
   pop();
+}
+
+function saveLogo(){
+  saveCanvas(myCanvas, 'LdcLogo', 'png');
+}
+
+function windowResized() {
+    resizeCanvas(500, 500); 
 }

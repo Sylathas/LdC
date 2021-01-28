@@ -48,16 +48,19 @@ function setup() {
   rectMode(CENTER);
   //rect(windowWidth/2,windowHeight/2,150,150);
 
+  imageMode(CENTER);
+  angleMode(DEGREES);
+
   //Add Coordinates
   textFont(folio);
   push();
   rotate(-90);
-  textSize(13);
-  text('0', -300-150, 300-160);
+  textSize(14.5);
+  text('0', -445, 147);
   textAlign(CENTER);
-  text('0', -300, 300-160);
+  text('0', -300, 147);
   textAlign(RIGHT);
-  text('0', -300+150, 300-160);
+  text('0', -150, 147);
   pop();
 
   lastlat = 0;
@@ -117,8 +120,6 @@ function setup() {
   saveButton.mousePressed(randomizeLogo);
 
   //Create Logo
-  imageMode(CENTER);
-  angleMode(DEGREES);
   image(circles[0], 300, 300, 600, 600);
   checkTriangle();
   image(semiCircles[0], 300, 300, 600, 600);
@@ -153,12 +154,12 @@ function changeLogo(){
   textFont(folio);
   push();
   rotate(-90);
-  textSize(13);
-  text(lastlat, -300-150, 300-160);
+  textSize(14.5);
+  text(lastlat, -445, 147);
   textAlign(CENTER);
-  text(lastlon, -300, 300-160);
+  text(lastlon, -300, 147);
   textAlign(RIGHT);
-  text(lastalt, -300+150, 300-160);
+  text(lastalt, -150, 147);
   pop();
 }
 
@@ -185,12 +186,12 @@ function randomizeLogo(){
   textFont(folio);
   push();
   rotate(-90);
-  textSize(13);
-  text(lastlat, -300-150, 300-160);
+  textSize(14.5);
+  text(lastlat, -445, 147);
   textAlign(CENTER);
-  text(lastlon, -300, 300-160);
+  text(lastlon, -300, 147);
   textAlign(RIGHT);
-  text(lastalt, -300+150, 300-160);
+  text(lastalt, -150, 147);
   pop();
 }
 

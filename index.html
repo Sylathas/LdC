@@ -9,7 +9,7 @@
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css' rel='stylesheet' />
   <script src='https://code.jquery.com/jquery-3.4.1.min.js'></script>
   <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
-  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css"/>
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css" />
   <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
   <script src="./addons/p5.js"></script>
@@ -17,31 +17,74 @@
 
 <body>
   <main>
-    <div id="logo"></div>
     <div id="map"></div>
+    <div id="afterloading">
+      <div id="logo"></div>
+      <div id="selecto"></div>
+    </div>
   </main>
 </body>
 <style>
+  @font-face {
+    font-family: folio;
+    src: url('assets/FolioStd-Light.otf');
+  }
+
   body {
     padding: 0;
     margin: 0;
     overflow: none;
   }
-  #map{
+
+  #map {
     position: absolute;
     top: 0;
     left: 50%;
     width: 50%;
     height: 100%;
   }
-  #logo{
+
+  #logo {
     position: absolute;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     top: 45%;
     left: 25%;
     width: 600px;
     height: 600px;
   }
+
+  select, button {
+    border: 0px;
+    font-family: folio;
+    font-size: 14px;
+    color: #666;
+    background-color: white;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+    transition: 0.5s;
+    cursor: pointer;
+    text-align: center;
+    padding-top: 5px;
+  }
+
+  select:hover,
+  button:hover {
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  select:focus,
+  button:focus {
+    outline: 0;
+  }
+
+  button {
+    border-radius: 20px;
+  }
+  #p5_loading img {
+    position: absolute;
+    top: 5.8%;
+    left: -0.7%;
+  }
 </style>
 <script src="sketch.js"></script>
+
 </html>

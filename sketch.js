@@ -83,9 +83,10 @@ function setup() {
   selector.id('aidi');
   lastvalue = selector.value();
   selector.changed(changeLogo);
+  selector.parent("selecto");
 
-  selector.size(windowWidth / 7.5, 20);
-  selector.position(windowWidth / 5, windowHeight / 2 + 150);
+  selector.size(windowWidth / 5.9, 30);
+  selector.position(windowWidth / 4.7, windowHeight / 1.44);
 /*
   //Create latitude input
   latitude = createInput();
@@ -112,8 +113,8 @@ function setup() {
 */
   //Create Button to save
   randButton = createButton('Salva');
-  randButton.size(windowWidth / 15, 50);
-  randButton.position(windowWidth / 10, windowHeight / 2 + 150);
+  randButton.size(windowWidth / 15, 30);
+  randButton.position(windowWidth / 10, windowHeight / 1.44);
   randButton.mousePressed(saveLogo);
 /*
   //Create Button to randomize
@@ -131,7 +132,7 @@ function setup() {
 }
 
 function changeLogo() {
-  //lastvalue = selector.value();
+  lastvalue = selector.value();
   hasinput = true;
   clear();
   if(styleSpec){
@@ -261,10 +262,11 @@ function windowResized() {
   selector.option('Spazi espositivi');
   selector.option('Spazi indipendenti');
   selector.selected(lastvalue);
-  selector.size(windowWidth / 7.5, 20);
-  selector.position(windowWidth / 5, windowHeight / 2 + 150);
+  selector.size(windowWidth / 5.9, 30);
+  selector.position(windowWidth / 3.9, windowHeight / 1.44);
   selector.id('aidi');
   selector.changed(changeLogo);
+  selector.parent("selecto");
 /*
   //Create latitude input
   latitude = createInput();
@@ -290,9 +292,9 @@ function windowResized() {
   genButton.mousePressed(changeLogo);
 */
   //Create Button to save
-  randButton = createButton('Save');
-  randButton.size(windowWidth / 15, 50);
-  randButton.position(windowWidth / 10, windowHeight / 2 + 150);
+  randButton = createButton('Salva');
+  randButton.size(windowWidth / 15, 30);
+  randButton.position(windowWidth / 10, windowHeight / 1.44);
   randButton.mousePressed(saveLogo);
 /*
   //Create Button to randomize

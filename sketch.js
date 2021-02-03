@@ -80,7 +80,9 @@ function setup() {
   selector.option('Spazi espositivi');
   selector.option('Spazi indipendenti');
   selector.selected('Arte negli spazi pubblici');
+  selector.id('aidi');
   lastvalue = selector.value();
+  selector.changed(changeLogo);
 
   selector.size(windowWidth / 7.5, 20);
   selector.position(windowWidth / 5, windowHeight / 2 + 150);
@@ -132,12 +134,18 @@ function changeLogo() {
   //lastvalue = selector.value();
   hasinput = true;
   clear();
-  if (styleSpec.center[1]) {
-    lastlat = styleSpec.center[1];
+  if(styleSpec){
+    if (styleSpec.center[1]) {
+      lastlat = styleSpec.center[1];
+    }
+    if (styleSpec.center[0]) {
+      lastlon = styleSpec.center[0];
+    }
+  } else {
+    lastlat = 0;
+    lastlon = 0;
   }
-  if (styleSpec.center[0]) {
-    lastlon = styleSpec.center[0];
-  }
+
   if (elevation) {
     lastalt = elevation;
   }
@@ -157,9 +165,15 @@ function changeLogo() {
   push();
   rotate(-90);
   textSize(14.5);
-  text(styleSpec.center[0].toFixed(3), -445, 147);
-  textAlign(CENTER);
-  text(styleSpec.center[1].toFixed(3), -300, 147);
+  if(styleSpec){
+    text(styleSpec.center[0].toFixed(3), -445, 147);
+    textAlign(CENTER);
+    text(styleSpec.center[1].toFixed(3), -300, 147);
+  } else{
+    text(0, -445, 147);
+    textAlign(CENTER);
+    text(0, -300, 147);
+  }
   textAlign(RIGHT);
   text(elevation, -150, 147);
   pop();
@@ -249,6 +263,8 @@ function windowResized() {
   selector.selected(lastvalue);
   selector.size(windowWidth / 7.5, 20);
   selector.position(windowWidth / 5, windowHeight / 2 + 150);
+  selector.id('aidi');
+  selector.changed(changeLogo);
 /*
   //Create latitude input
   latitude = createInput();

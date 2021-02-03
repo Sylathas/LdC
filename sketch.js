@@ -10,7 +10,11 @@ const trianglesnine = [];
 const trianglesten = [];
 const circles = [];
 const semiCircles = [];
-var myCanvas, r1 = 0, r2 = 0, r3 = 0, selector, latitude, longitude, altitude, lastlat, lastlon, lastalt, hasinput = false, lastvalue;
+var myCanvas, r1 = 0,
+  r2 = 0,
+  r3 = 0,
+  selector, lastlat = 0, lastlon = 0, lastalt = 0, hasinput = false,
+  lastvalue, styleSpec, elevation = 0;
 
 function preload() {
   loader('T', 10);
@@ -20,29 +24,29 @@ function preload() {
   folio = loadFont('assets/FolioStd-Light.otf');
 }
 
-function loader(name, num){
-  for(let i = 0; i < num; i++){
-    if(name === 'T'){
-      trianglesone.push(loadImage('assets/triangle/00/T0'+i+'.png'));
-      trianglestwo.push(loadImage('assets/triangle/01/T0'+i+'.png'));
-      trianglesthree.push(loadImage('assets/triangle/02/T0'+i+'.png'));
-      trianglesfour.push(loadImage('assets/triangle/03/T0'+i+'.png'));
-      trianglesfive.push(loadImage('assets/triangle/04/T0'+i+'.png'));
-      trianglessix.push(loadImage('assets/triangle/05/T0'+i+'.png'));
-      trianglesseven.push(loadImage('assets/triangle/06/T0'+i+'.png'));
-      triangleseight.push(loadImage('assets/triangle/07/T0'+i+'.png'));
-      trianglesnine.push(loadImage('assets/triangle/08/T0'+i+'.png'));
-      trianglesten.push(loadImage('assets/triangle/09/T0'+i+'.png'));
-    } else if(name === 'C'){
-      circles.push(loadImage('assets/circle/C0'+i+'.png'));
-    } else if(name === 'SC'){
-      semiCircles.push(loadImage('assets/semiCircle/SC0'+i+'.png'));
+function loader(name, num) {
+  for (let i = 0; i < num; i++) {
+    if (name === 'T') {
+      trianglesone.push(loadImage('assets/triangle/00/T0' + i + '.png'));
+      trianglestwo.push(loadImage('assets/triangle/01/T0' + i + '.png'));
+      trianglesthree.push(loadImage('assets/triangle/02/T0' + i + '.png'));
+      trianglesfour.push(loadImage('assets/triangle/03/T0' + i + '.png'));
+      trianglesfive.push(loadImage('assets/triangle/04/T0' + i + '.png'));
+      trianglessix.push(loadImage('assets/triangle/05/T0' + i + '.png'));
+      trianglesseven.push(loadImage('assets/triangle/06/T0' + i + '.png'));
+      triangleseight.push(loadImage('assets/triangle/07/T0' + i + '.png'));
+      trianglesnine.push(loadImage('assets/triangle/08/T0' + i + '.png'));
+      trianglesten.push(loadImage('assets/triangle/09/T0' + i + '.png'));
+    } else if (name === 'C') {
+      circles.push(loadImage('assets/circle/C0' + i + '.png'));
+    } else if (name === 'SC') {
+      semiCircles.push(loadImage('assets/semiCircle/SC0' + i + '.png'));
     }
   }
 }
 
 function setup() {
-  myCanvas = createCanvas(600 ,600);
+  myCanvas = createCanvas(600, 600);
   myCanvas.parent("logo");
   //Create Grid
   rectMode(CENTER);
@@ -63,10 +67,6 @@ function setup() {
   text('0', -150, 147);
   pop();
 
-  lastlat = 0;
-  lastlon = 0;
-  lastalt = 0;
-
   //Create type selector
   selector = createSelect();
   selector.option('Arte negli spazi pubblici');
@@ -81,43 +81,45 @@ function setup() {
   selector.option('Spazi indipendenti');
   selector.selected('Arte negli spazi pubblici');
   lastvalue = selector.value();
-  selector.size(100, 20);
-  selector.position(windowWidth/2+250, windowHeight/2+150);
 
+  selector.size(windowWidth / 7.5, 20);
+  selector.position(windowWidth / 5, windowHeight / 2 + 150);
+/*
   //Create latitude input
   latitude = createInput();
-  latitude.size(100, 20);
-  latitude.position(windowWidth/2-220, windowHeight/2+150);
+  latitude.size(70, 13);
+  latitude.position(300, windowHeight / 2 + 150);
 
   //Create longitude input
   longitude = createInput();
-  longitude.size(100, 20);
-  longitude.position(windowWidth/2-55, windowHeight/2+150);
+  longitude.size(70, 13);
+  longitude.position(400, windowHeight / 2 + 150);
 
   //Create altitude input
   altitude = createInput();
-  altitude.size(100, 20);
-  altitude.position(windowWidth/2+110, windowHeight/2+150);
+  altitude.size(70, 13);
+  altitude.position(500, windowHeight / 2 + 150);
 
   addInputPlaceholder();
 
   //Create Button to generate
-  genButton = createButton('Generate');
+  genButton = createButton('Genera');
   genButton.size(110, 50);
-  genButton.position(windowWidth/2-220, windowHeight/2+250);
+  genButton.position(300, windowHeight / 2 + 200);
   genButton.mousePressed(changeLogo);
-
+*/
   //Create Button to save
-  randButton = createButton('Save');
-  randButton.size(110, 50);
-  randButton.position(windowWidth/2-55, windowHeight/2+250);
+  randButton = createButton('Salva');
+  randButton.size(windowWidth / 15, 50);
+  randButton.position(windowWidth / 10, windowHeight / 2 + 150);
   randButton.mousePressed(saveLogo);
-
+/*
   //Create Button to randomize
-  saveButton = createButton('Randomize');
+  saveButton = createButton('Randomizza');
   saveButton.size(110, 50);
-  saveButton.position(windowWidth/2+110, windowHeight/2+250);
+  saveButton.position(600, windowHeight / 2 + 200);
   saveButton.mousePressed(randomizeLogo);
+*/
 
   //Create Logo
   image(circles[0], 300, 300, 600, 600);
@@ -126,18 +128,18 @@ function setup() {
   image(logoName, 300, 300, 600, 600);
 }
 
-function changeLogo(){
-  lastvalue = selector.value();
+function changeLogo() {
+  //lastvalue = selector.value();
   hasinput = true;
   clear();
-  if(latitude.value()){
-    lastlat = latitude.value();
+  if (styleSpec.center[1]) {
+    lastlat = styleSpec.center[1];
   }
-  if (longitude.value()){
-    lastlon = longitude.value();
+  if (styleSpec.center[0]) {
+    lastlon = styleSpec.center[0];
   }
-  if(altitude.value()){
-    lastalt = altitude.value();
+  if (elevation) {
+    lastalt = elevation;
   }
 
   r1 = checkFirstNumber(lastlat, r1, true);
@@ -155,15 +157,15 @@ function changeLogo(){
   push();
   rotate(-90);
   textSize(14.5);
-  text(lastlat, -445, 147);
+  text(styleSpec.center[0].toFixed(3), -445, 147);
   textAlign(CENTER);
-  text(lastlon, -300, 147);
+  text(styleSpec.center[1].toFixed(3), -300, 147);
   textAlign(RIGHT);
-  text(lastalt, -150, 147);
+  text(elevation, -150, 147);
   pop();
 }
 
-function randomizeLogo(){
+function randomizeLogo() {
   hasinput = true;
   clear();
 
@@ -195,139 +197,200 @@ function randomizeLogo(){
   pop();
 }
 
-function checkFirstNumber(coordinate, r, n){
+function checkFirstNumber(coordinate, r, n) {
   var cordfirst1 = coordinate;
-  if(n){cordfirst1 = (coordinate - floor(coordinate))*10;}
+  if (n) {
+    cordfirst1 = (coordinate - floor(coordinate)) * 10;
+  }
   const cordfirst2 = str(cordfirst1).charAt(0);
   const cordfirst3 = Number(cordfirst2);
-  if(cordfirst3 > -1 || cordfirst3 < 10){
+  if (cordfirst3 > -1 || cordfirst3 < 10) {
     return cordfirst3;
-  } else{
+  } else {
     return r;
   }
 }
 
-function saveLogo(){
+function saveLogo() {
   saveCanvas(myCanvas, 'LdcLogo', 'png');
 }
 
 function windowResized() {
-    clear();
-    randButton.remove();
-    saveButton.remove();
-    genButton.remove();
-    latitude.remove();
-    longitude.remove();
-    altitude.remove();
-    selector.remove();
+  clear();
+  randButton.remove();
+  selector.remove();
 
-    //Add Coordinates
-    textFont(folio);
-    push();
-    rotate(-90);
-    textSize(13);
-    text(lastlat, -300-150, 300-160);
-    textAlign(CENTER);
-    text(lastlon, -300, 300-160);
-    textAlign(RIGHT);
-    text(lastalt, -300+150, 300-160);
-    pop();
+  //Add Coordinates
+  textFont(folio);
+  push();
+  rotate(-90);
+  textSize(14.5);
+  if(lastlon.countDecimals() < 3){text(lastlon, -445, 147)}
+  else{text(lastlon.toFixed(3), -445, 147);}
+  textAlign(CENTER);
+  if(lastlat.countDecimals() < 3){text(lastlat, -300, 147)}
+  else{text(lastlat.toFixed(3), -300, 147);}
+  textAlign(RIGHT);
+  text(lastalt, -150, 147);
+  pop();
 
-    //Create type selector
-    selector = createSelect();
-    selector.option('Arte negli spazi pubblici');
-    selector.option('Associazioni');
-    selector.option('Collezioni');
-    selector.option('Fondazioni');
-    selector.option('Istituti esteri');
-    selector.option('Musei');
-    selector.option('Musei aziendali e d\'impresa');
-    selector.option('Parchi e Giardini');
-    selector.option('Spazi espositivi');
-    selector.option('Spazi indipendenti');
-    selector.selected(lastvalue);
-    selector.size(100, 20);
-    selector.position(windowWidth/2+250, windowHeight/2+150);
+  //Create type selector
+  selector = createSelect();
+  selector.option('Arte negli spazi pubblici');
+  selector.option('Associazioni');
+  selector.option('Collezioni');
+  selector.option('Fondazioni');
+  selector.option('Istituti esteri');
+  selector.option('Musei');
+  selector.option('Musei aziendali e d\'impresa');
+  selector.option('Parchi e Giardini');
+  selector.option('Spazi espositivi');
+  selector.option('Spazi indipendenti');
+  selector.selected(lastvalue);
+  selector.size(windowWidth / 7.5, 20);
+  selector.position(windowWidth / 5, windowHeight / 2 + 150);
+/*
+  //Create latitude input
+  latitude = createInput();
+  latitude.size(100, 20);
+  latitude.position(windowWidth / 2 - 220, windowHeight / 2 + 150);
 
-    //Create latitude input
-    latitude = createInput();
-    latitude.size(100, 20);
-    latitude.position(windowWidth/2-220, windowHeight/2+150);
+  //Create longitude input
+  longitude = createInput();
+  longitude.size(100, 20);
+  longitude.position(windowWidth / 2 - 55, windowHeight / 2 + 150);
 
-    //Create longitude input
-    longitude = createInput();
-    longitude.size(100, 20);
-    longitude.position(windowWidth/2-55, windowHeight/2+150);
+  //Create altitude input
+  altitude = createInput();
+  altitude.size(100, 20);
+  altitude.position(windowWidth / 2 + 110, windowHeight / 2 + 150);
 
-    //Create altitude input
-    altitude = createInput();
-    altitude.size(100, 20);
-    altitude.position(windowWidth/2+110, windowHeight/2+150);
+  addInputPlaceholder(hasinput);
 
-    addInputPlaceholder(hasinput);
-
-    //Create Button to generate
-    genButton = createButton('Generate');
-    genButton.size(110, 50);
-    genButton.position(windowWidth/2-220, windowHeight/2+250);
-    genButton.mousePressed(changeLogo);
-
-    //Create Button to save
-    randButton = createButton('Save');
-    randButton.size(110, 50);
-    randButton.position(windowWidth/2-55, windowHeight/2+250);
-    randButton.mousePressed(saveLogo);
-
-    //Create Button to randomize
-    saveButton = createButton('Randomize');
-    saveButton.size(110, 50);
-    saveButton.position(windowWidth/2+110, windowHeight/2+250);
-    saveButton.mousePressed(randomizeLogo);
-
-    //Create Logo
-    image(circles[r1], 300, 300, 600, 600);
-    checkTriangle();
-    image(semiCircles[r3], 300, 300, 600, 600);
-    image(logoName, 300, 300, 600, 600);
+  //Create Button to generate
+  genButton = createButton('Generate');
+  genButton.size(110, 50);
+  genButton.position(windowWidth / 2 - 220, windowHeight / 2 + 250);
+  genButton.mousePressed(changeLogo);
+*/
+  //Create Button to save
+  randButton = createButton('Save');
+  randButton.size(windowWidth / 15, 50);
+  randButton.position(windowWidth / 10, windowHeight / 2 + 150);
+  randButton.mousePressed(saveLogo);
+/*
+  //Create Button to randomize
+  saveButton = createButton('Randomize');
+  saveButton.size(110, 50);
+  saveButton.position(windowWidth / 2 + 110, windowHeight / 2 + 250);
+  saveButton.mousePressed(randomizeLogo);
+*/
+  //Create Logo
+  image(circles[r2], 300, 300, 600, 600);
+  checkTriangle();
+  image(semiCircles[r3], 300, 300, 600, 600);
+  image(logoName, 300, 300, 600, 600);
 }
 
-function addInputPlaceholder(hasinput){
+function addInputPlaceholder(hasinput) {
   i = 0;
   inputs = document.getElementsByTagName('input');
-  for (input of inputs){
-    if(hasinput){
-      if(i == 0){input.value = lastlat;}
-      else if(i == 1){input.value = lastlon;}
-      else if(i == 2){input.value = lastalt;}
-    } else if(!hasinput){
-      if(i == 0){input.placeholder = "Latitudine";}
-      else if(i == 1){input.placeholder = "Longitudine";}
-      else if(i == 2){input.placeholder = "Altitudine";}
+  for (input of inputs) {
+    if (hasinput) {
+      if (i == 1) {
+        input.value = lastlat;
+      } else if (i == 2) {
+        input.value = lastlon;
+      } else if (i == 3) {
+        input.value = lastalt;
+      }
+    } else if (!hasinput) {
+      if (i == 1) {
+        input.placeholder = "Latitudine";
+      } else if (i == 2) {
+        input.placeholder = "Longitudine";
+      } else if (i == 3) {
+        input.placeholder = "Altitudine";
+      }
     }
     i++;
   }
 }
 
-function checkTriangle(){
-  if(selector.value() == 'Arte negli spazi pubblici'){
+function checkTriangle() {
+  if (selector.value() == 'Arte negli spazi pubblici') {
     image(trianglesone[r1], 300, 300, 600, 600);
-  } else if(selector.value() == 'Associazioni'){
+  } else if (selector.value() == 'Associazioni') {
     image(trianglestwo[r1], 300, 300, 600, 600);
-  } else if(selector.value() == 'Collezioni'){
+  } else if (selector.value() == 'Collezioni') {
     image(trianglesthree[r1], 300, 300, 600, 600);
-  } else if(selector.value() == 'Fondazioni'){
+  } else if (selector.value() == 'Fondazioni') {
     image(trianglesfour[r1], 300, 300, 600, 600);
-  } else if(selector.value() == 'Istituti esteri'){
+  } else if (selector.value() == 'Istituti esteri') {
     image(trianglesfive[r1], 300, 300, 600, 600);
-  } else if(selector.value() == 'Musei'){
+  } else if (selector.value() == 'Musei') {
     image(trianglessix[r1], 300, 300, 600, 600);
-  } else if(selector.value() == 'Musei aziendali e d\'impresa'){
+  } else if (selector.value() == 'Musei aziendali e d\'impresa') {
     image(trianglesseven[r1], 300, 300, 600, 600);
-  } else if(selector.value() == 'Parchi e Giardini'){
+  } else if (selector.value() == 'Parchi e Giardini') {
     image(triangleseight[r1], 300, 300, 600, 600);
-  } else if(selector.value() == 'Spazi espositivi'){
+  } else if (selector.value() == 'Spazi espositivi') {
     image(trianglesnine[r1], 300, 300, 600, 600);
-  } else if(selector.value() == 'Spazi indipendenti'){
+  } else if (selector.value() == 'Spazi indipendenti') {
     image(trianglesten[r1], 300, 300, 600, 600);
   }
+}
+
+//mapbox
+
+mapboxgl.accessToken = 'pk.eyJ1Ijoic3lsYXRoYXMiLCJhIjoiY2szNzF1ZTR5MDc5MzNtbnM0dmwzNzdyMCJ9.EN7o0z5fjNZqb_aQFTe8vg';
+var map = new mapboxgl.Map({
+  container: 'map', // Specify the container ID
+  style: 'mapbox://styles/mapbox/outdoors-v11', // Specify which map style to use
+  center: [12.5736108, 41.29246], // Specify the starting position [lng, lat]
+  zoom: 5 // Specify the starting zoom
+});
+
+var geocoder = new MapboxGeocoder({
+  accessToken: mapboxgl.accessToken,
+  mapboxgl: mapboxgl
+});
+
+map.addControl(geocoder, 'top-left');
+
+map.on('load', function() {
+  // Listen for the `geocoder.input` event that is triggered when a user
+  // makes a selection
+  geocoder.on('result', function(ev) {
+    styleSpec = ev.result;
+    getElevation(styleSpec.center[0], styleSpec.center[1]);
+  });
+});
+
+function getElevation(lng, lat) {
+  // make API request
+  var query = 'https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery/' + lng + ',' + lat + '.json?layers=contour&access_token=pk.eyJ1Ijoic3lsYXRoYXMiLCJhIjoiY2szNzF1ZTR5MDc5MzNtbnM0dmwzNzdyMCJ9.EN7o0z5fjNZqb_aQFTe8vg';
+  $.ajax({
+    method: 'GET',
+    url: query,
+  }).done(function(data) {
+    // Get all the returned features
+    var allFeatures = data.features;
+    // Create an empty array to add elevation data to
+    var elevations = [];
+    // For each returned feature, add elevation data to the elevations array
+    for (i = 0; i < allFeatures.length; i++) {
+      elevations.push(allFeatures[i].properties.ele);
+    }
+    // In the elevations array, find the largest value
+    var highestElevation = Math.max(...elevations);
+    // Display the largest elevation value
+    elevation = highestElevation;
+    changeLogo();
+  });
+}
+
+Number.prototype.countDecimals = function () {
+    if(Math.floor(this.valueOf()) === this.valueOf()) return 0;
+    return this.toString().split(".")[1].length || 0;
 }

@@ -215,9 +215,10 @@ function randomizeLogo() {
 function checkFirstNumber(coordinate, r, n) {
   var cordfirst1 = coordinate;
   if (n) {
-    cordfirst1 = (coordinate - floor(coordinate)) * 10;
+    cordfirst1 = (coordinate - floor(coordinate)) * 100;
   }
-  const cordfirst2 = str(cordfirst1).charAt(0);
+  const cordfirst2 = str(cordfirst1).charAt(1);
+  console.log(cordfirst1);
   const cordfirst3 = Number(cordfirst2);
   if (cordfirst3 > -1 || cordfirst3 < 10) {
     return cordfirst3;
@@ -364,13 +365,16 @@ function checkTriangle() {
 mapboxgl.accessToken = 'pk.eyJ1Ijoic3lsYXRoYXMiLCJhIjoiY2szNzF1ZTR5MDc5MzNtbnM0dmwzNzdyMCJ9.EN7o0z5fjNZqb_aQFTe8vg';
 var map = new mapboxgl.Map({
   container: 'map', // Specify the container ID
-  style: 'mapbox://styles/sylathas/ckkqx0lnf1gmd17mm4spdaqmx', // Specify which map style to use
+  style: 'mapbox://styles/sylathas/ckkr3cciz03ki17o5h402418c', // Specify which map style to use
   center: [12.5736108, 41.29246], // Specify the starting position [lng, lat]
   zoom: 5 // Specify the starting zoom
 });
 
 var geocoder = new MapboxGeocoder({
   accessToken: mapboxgl.accessToken,
+  marker: {
+    color: 'gray'
+  },
   mapboxgl: mapboxgl
 });
 
@@ -386,7 +390,7 @@ map.on('load', function() {
 });
 
 function getElevation(lng, lat) {
-  // make API request mapbox://styles/sylathas/ckkqx0lnf1gmd17mm4spdaqmx
+  // make API request
   var query = 'https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery/' + lng + ',' + lat + '.json?layers=contour&access_token=pk.eyJ1Ijoic3lsYXRoYXMiLCJhIjoiY2szNzF1ZTR5MDc5MzNtbnM0dmwzNzdyMCJ9.EN7o0z5fjNZqb_aQFTe8vg';
   $.ajax({
     method: 'GET',

@@ -364,7 +364,7 @@ function checkTriangle() {
 mapboxgl.accessToken = 'pk.eyJ1Ijoic3lsYXRoYXMiLCJhIjoiY2szNzF1ZTR5MDc5MzNtbnM0dmwzNzdyMCJ9.EN7o0z5fjNZqb_aQFTe8vg';
 var map = new mapboxgl.Map({
   container: 'map', // Specify the container ID
-  style: 'mapbox://styles/mapbox/outdoors-v11', // Specify which map style to use
+  style: 'mapbox://styles/sylathas/ckkqx0lnf1gmd17mm4spdaqmx', // Specify which map style to use
   center: [12.5736108, 41.29246], // Specify the starting position [lng, lat]
   zoom: 5 // Specify the starting zoom
 });
@@ -386,7 +386,7 @@ map.on('load', function() {
 });
 
 function getElevation(lng, lat) {
-  // make API request
+  // make API request mapbox://styles/sylathas/ckkqx0lnf1gmd17mm4spdaqmx
   var query = 'https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery/' + lng + ',' + lat + '.json?layers=contour&access_token=pk.eyJ1Ijoic3lsYXRoYXMiLCJhIjoiY2szNzF1ZTR5MDc5MzNtbnM0dmwzNzdyMCJ9.EN7o0z5fjNZqb_aQFTe8vg';
   $.ajax({
     method: 'GET',

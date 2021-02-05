@@ -13,8 +13,12 @@ const semiCircles = [];
 var myCanvas, r1 = 0,
   r2 = 0,
   r3 = 0,
-  selector, lastlat = 0, lastlon = 0, lastalt = 0, hasinput = false,
-  lastvalue, styleSpec, elevation = 0;
+  selector, lastlat = 0,
+  lastlon = 0,
+  lastalt = 0,
+  hasinput = false,
+  lastvalue, styleSpec, elevation = 0,
+  checkbox, checker = false;
 
 function preload() {
   loader('T', 10);
@@ -67,6 +71,11 @@ function setup() {
   text('0', -150, 147);
   pop();
 
+  //Create checkbox
+  checkbox = createCheckbox('rimuovi testo', false);
+  checkbox.changed(myCheckedEvent);
+  checkbox.position(windowWidth / 10, windowHeight / 1.3);
+
   //Create type selector
   selector = createSelect();
   selector.option('Arte negli spazi pubblici');
@@ -82,47 +91,53 @@ function setup() {
   selector.selected('Arte negli spazi pubblici');
   selector.id('aidi');
   lastvalue = selector.value();
-  selector.changed(changeLogo);
+  selector.changed(function(){
+    if(checker == true){
+      noTextLogo();
+    } else{
+      changeLogo();
+    }
+  });
   selector.parent("selecto");
 
   selector.size(windowWidth / 5.9, 30);
   selector.position(windowWidth / 4.7, windowHeight / 1.44);
-/*
-  //Create latitude input
-  latitude = createInput();
-  latitude.size(70, 13);
-  latitude.position(300, windowHeight / 2 + 150);
+  /*
+    //Create latitude input
+    latitude = createInput();
+    latitude.size(70, 13);
+    latitude.position(300, windowHeight / 2 + 150);
 
-  //Create longitude input
-  longitude = createInput();
-  longitude.size(70, 13);
-  longitude.position(400, windowHeight / 2 + 150);
+    //Create longitude input
+    longitude = createInput();
+    longitude.size(70, 13);
+    longitude.position(400, windowHeight / 2 + 150);
 
-  //Create altitude input
-  altitude = createInput();
-  altitude.size(70, 13);
-  altitude.position(500, windowHeight / 2 + 150);
+    //Create altitude input
+    altitude = createInput();
+    altitude.size(70, 13);
+    altitude.position(500, windowHeight / 2 + 150);
 
-  addInputPlaceholder();
+    addInputPlaceholder();
 
-  //Create Button to generate
-  genButton = createButton('Genera');
-  genButton.size(110, 50);
-  genButton.position(300, windowHeight / 2 + 200);
-  genButton.mousePressed(changeLogo);
-*/
+    //Create Button to generate
+    genButton = createButton('Genera');
+    genButton.size(110, 50);
+    genButton.position(300, windowHeight / 2 + 200);
+    genButton.mousePressed(changeLogo);
+  */
   //Create Button to save
   randButton = createButton('Salva');
   randButton.size(windowWidth / 15, 30);
   randButton.position(windowWidth / 10, windowHeight / 1.44);
   randButton.mousePressed(saveLogo);
-/*
-  //Create Button to randomize
-  saveButton = createButton('Randomizza');
-  saveButton.size(110, 50);
-  saveButton.position(600, windowHeight / 2 + 200);
-  saveButton.mousePressed(randomizeLogo);
-*/
+  /*
+    //Create Button to randomize
+    saveButton = createButton('Randomizza');
+    saveButton.size(110, 50);
+    saveButton.position(600, windowHeight / 2 + 200);
+    saveButton.mousePressed(randomizeLogo);
+  */
 
   //Create Logo
   image(circles[0], 300, 300, 600, 600);
@@ -135,7 +150,7 @@ function changeLogo() {
   lastvalue = selector.value();
   hasinput = true;
   clear();
-  if(styleSpec){
+  if (styleSpec) {
     if (styleSpec.center[1]) {
       lastlat = styleSpec.center[1];
     }
@@ -166,11 +181,11 @@ function changeLogo() {
   push();
   rotate(-90);
   textSize(14.5);
-  if(styleSpec){
+  if (styleSpec) {
     text(styleSpec.center[0].toFixed(3), -445, 147);
     textAlign(CENTER);
     text(styleSpec.center[1].toFixed(3), -300, 147);
-  } else{
+  } else {
     text(0, -445, 147);
     textAlign(CENTER);
     text(0, -300, 147);
@@ -178,6 +193,37 @@ function changeLogo() {
   textAlign(RIGHT);
   text(elevation, -150, 147);
   pop();
+}
+
+function noTextLogo() {
+  lastvalue = selector.value();
+  hasinput = true;
+  clear();
+
+  if (styleSpec) {
+    if (styleSpec.center[1]) {
+      lastlat = styleSpec.center[1];
+    }
+    if (styleSpec.center[0]) {
+      lastlon = styleSpec.center[0];
+    }
+  } else {
+    lastlat = 0;
+    lastlon = 0;
+  }
+
+  if (elevation) {
+    lastalt = elevation;
+  }
+
+  r1 = checkFirstNumber(lastlat, r1, true);
+  r2 = checkFirstNumber(lastlon, r2, true);
+  r3 = checkFirstNumber(lastalt, r3, false);
+
+  //Create Logo
+  image(circles[r3], 300, 300, 600, 600);
+  checkTriangle();
+  image(semiCircles[r2], 300, 300, 600, 600);
 }
 
 function randomizeLogo() {
@@ -235,20 +281,34 @@ function windowResized() {
   clear();
   randButton.remove();
   selector.remove();
+  checkbox.remove();
 
-  //Add Coordinates
-  textFont(folio);
-  push();
-  rotate(-90);
-  textSize(14.5);
-  if(lastlon.countDecimals() < 3){text(lastlon, -445, 147)}
-  else{text(lastlon.toFixed(3), -445, 147);}
-  textAlign(CENTER);
-  if(lastlat.countDecimals() < 3){text(lastlat, -300, 147)}
-  else{text(lastlat.toFixed(3), -300, 147);}
-  textAlign(RIGHT);
-  text(lastalt, -150, 147);
-  pop();
+  if(checker == false){
+    //Add Coordinates
+    textFont(folio);
+    push();
+    rotate(-90);
+    textSize(14.5);
+    if (lastlon.countDecimals() < 3) {
+      text(lastlon, -445, 147)
+    } else {
+      text(lastlon.toFixed(3), -445, 147);
+    }
+    textAlign(CENTER);
+    if (lastlat.countDecimals() < 3) {
+      text(lastlat, -300, 147)
+    } else {
+      text(lastlat.toFixed(3), -300, 147);
+    }
+    textAlign(RIGHT);
+    text(lastalt, -150, 147);
+    pop();
+  }
+
+  //Create checkbox
+  checkbox = createCheckbox('rimuovi testo', checker);
+  checkbox.changed(myCheckedEvent);
+  checkbox.position(windowWidth / 10, windowHeight / 1.3);
 
   //Create type selector
   selector = createSelect();
@@ -266,49 +326,63 @@ function windowResized() {
   selector.size(windowWidth / 5.9, 30);
   selector.position(windowWidth / 3.9, windowHeight / 1.44);
   selector.id('aidi');
-  selector.changed(changeLogo);
+  selector.changed(function(){
+    if(checker == true){
+      noTextLogo();
+    } else{
+      changeLogo();
+    }
+  });
   selector.parent("selecto");
-/*
-  //Create latitude input
-  latitude = createInput();
-  latitude.size(100, 20);
-  latitude.position(windowWidth / 2 - 220, windowHeight / 2 + 150);
+  /*
+    //Create latitude input
+    latitude = createInput();
+    latitude.size(100, 20);
+    latitude.position(windowWidth / 2 - 220, windowHeight / 2 + 150);
 
-  //Create longitude input
-  longitude = createInput();
-  longitude.size(100, 20);
-  longitude.position(windowWidth / 2 - 55, windowHeight / 2 + 150);
+    //Create longitude input
+    longitude = createInput();
+    longitude.size(100, 20);
+    longitude.position(windowWidth / 2 - 55, windowHeight / 2 + 150);
 
-  //Create altitude input
-  altitude = createInput();
-  altitude.size(100, 20);
-  altitude.position(windowWidth / 2 + 110, windowHeight / 2 + 150);
+    //Create altitude input
+    altitude = createInput();
+    altitude.size(100, 20);
+    altitude.position(windowWidth / 2 + 110, windowHeight / 2 + 150);
 
-  addInputPlaceholder(hasinput);
+    addInputPlaceholder(hasinput);
 
-  //Create Button to generate
-  genButton = createButton('Generate');
-  genButton.size(110, 50);
-  genButton.position(windowWidth / 2 - 220, windowHeight / 2 + 250);
-  genButton.mousePressed(changeLogo);
-*/
+    //Create Button to generate
+    genButton = createButton('Generate');
+    genButton.size(110, 50);
+    genButton.position(windowWidth / 2 - 220, windowHeight / 2 + 250);
+    genButton.mousePressed(changeLogo);
+  */
   //Create Button to save
   randButton = createButton('Salva');
   randButton.size(windowWidth / 15, 30);
   randButton.position(windowWidth / 10, windowHeight / 1.44);
   randButton.mousePressed(saveLogo);
-/*
-  //Create Button to randomize
-  saveButton = createButton('Randomize');
-  saveButton.size(110, 50);
-  saveButton.position(windowWidth / 2 + 110, windowHeight / 2 + 250);
-  saveButton.mousePressed(randomizeLogo);
-*/
-  //Create Logo
-  image(circles[r2], 300, 300, 600, 600);
-  checkTriangle();
-  image(semiCircles[r3], 300, 300, 600, 600);
-  image(logoName, 300, 300, 600, 600);
+  /*
+    //Create Button to randomize
+    saveButton = createButton('Randomize');
+    saveButton.size(110, 50);
+    saveButton.position(windowWidth / 2 + 110, windowHeight / 2 + 250);
+    saveButton.mousePressed(randomizeLogo);
+  */
+
+  if(checker == true){
+    //Create no text Logo
+    image(circles[r2], 300, 300, 600, 600);
+    checkTriangle();
+    image(semiCircles[r3], 300, 300, 600, 600);
+  } else{
+    //Create Logo
+    image(circles[r2], 300, 300, 600, 600);
+    checkTriangle();
+    image(semiCircles[r3], 300, 300, 600, 600);
+    image(logoName, 300, 300, 600, 600);
+  }
 }
 
 function addInputPlaceholder(hasinput) {
@@ -360,6 +434,43 @@ function checkTriangle() {
   }
 }
 
+function myCheckedEvent() {
+  if (this.checked()) {
+    noTextLogo();
+    checker = true;
+  } else {
+    changeLogo();
+    checker = false;
+  }
+}
+
+function getElevation(lng, lat) {
+  // make API request
+  var query = 'https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery/' + lng + ',' + lat + '.json?layers=contour&access_token=pk.eyJ1Ijoic3lsYXRoYXMiLCJhIjoiY2szNzF1ZTR5MDc5MzNtbnM0dmwzNzdyMCJ9.EN7o0z5fjNZqb_aQFTe8vg';
+  $.ajax({
+    method: 'GET',
+    url: query,
+  }).done(function(data) {
+    // Get all the returned features
+    var allFeatures = data.features;
+    // Create an empty array to add elevation data to
+    var elevations = [];
+    // For each returned feature, add elevation data to the elevations array
+    for (i = 0; i < allFeatures.length; i++) {
+      elevations.push(allFeatures[i].properties.ele);
+    }
+    // In the elevations array, find the largest value
+    var highestElevation = Math.max(...elevations);
+    // Display the largest elevation value
+    elevation = highestElevation;
+    if(checker == true){
+      noTextLogo();
+    } else{
+      changeLogo();
+    }
+  });
+}
+
 //mapbox
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoic3lsYXRoYXMiLCJhIjoiY2szNzF1ZTR5MDc5MzNtbnM0dmwzNzdyMCJ9.EN7o0z5fjNZqb_aQFTe8vg';
@@ -389,30 +500,7 @@ map.on('load', function() {
   });
 });
 
-function getElevation(lng, lat) {
-  // make API request
-  var query = 'https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery/' + lng + ',' + lat + '.json?layers=contour&access_token=pk.eyJ1Ijoic3lsYXRoYXMiLCJhIjoiY2szNzF1ZTR5MDc5MzNtbnM0dmwzNzdyMCJ9.EN7o0z5fjNZqb_aQFTe8vg';
-  $.ajax({
-    method: 'GET',
-    url: query,
-  }).done(function(data) {
-    // Get all the returned features
-    var allFeatures = data.features;
-    // Create an empty array to add elevation data to
-    var elevations = [];
-    // For each returned feature, add elevation data to the elevations array
-    for (i = 0; i < allFeatures.length; i++) {
-      elevations.push(allFeatures[i].properties.ele);
-    }
-    // In the elevations array, find the largest value
-    var highestElevation = Math.max(...elevations);
-    // Display the largest elevation value
-    elevation = highestElevation;
-    changeLogo();
-  });
-}
-
-Number.prototype.countDecimals = function () {
-    if(Math.floor(this.valueOf()) === this.valueOf()) return 0;
-    return this.toString().split(".")[1].length || 0;
+Number.prototype.countDecimals = function() {
+  if (Math.floor(this.valueOf()) === this.valueOf()) return 0;
+  return this.toString().split(".")[1].length || 0;
 }

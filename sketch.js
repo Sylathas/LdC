@@ -18,7 +18,8 @@ var myCanvas, r1 = 0,
   lastalt = 0,
   hasinput = false,
   lastvalue, styleSpec, elevation = 0,
-  checkbox, checker = false;
+  checkbox1, checkbox2, checker1 = false,
+  checker2 = false;
 
 function preload() {
   loader('T', 10);
@@ -71,10 +72,15 @@ function setup() {
   text('0', -150, 147);
   pop();
 
-  //Create checkbox
-  checkbox = createCheckbox('rimuovi testo', false);
-  checkbox.changed(myCheckedEvent);
-  checkbox.position(windowWidth / 10, windowHeight / 1.3);
+  //Create checkbox 1
+  checkbox1 = createCheckbox('rimuovi coordinate', checker1);
+  checkbox1.changed(myCheckedEvent1);
+  checkbox1.position(windowWidth / 10, windowHeight / 1.3);
+
+  //Create checkbox 2
+  checkbox2 = createCheckbox('rimuovi nome', checker2);
+  checkbox2.changed(myCheckedEvent2);
+  checkbox2.position(windowWidth / 10, windowHeight / 1.25);
 
   //Create type selector
   selector = createSelect();
@@ -92,11 +98,7 @@ function setup() {
   selector.id('aidi');
   lastvalue = selector.value();
   selector.changed(function(){
-    if(checker == true){
-      noTextLogo();
-    } else{
-      changeLogo();
-    }
+    changeLogo();
   });
   selector.parent("selecto");
 
@@ -174,59 +176,30 @@ function changeLogo() {
   image(circles[r3], 300, 300, 600, 600);
   checkTriangle();
   image(semiCircles[r2], 300, 300, 600, 600);
-  image(logoName, 300, 300, 600, 600);
+  if(!checker2){image(logoName, 300, 300, 600, 600);}
 
-  //Add Coordinates
-  textFont(folio);
-  push();
-  rotate(-90);
-  textSize(14.5);
-  if (styleSpec) {
-    text(styleSpec.center[0].toFixed(3), -445, 147);
-    textAlign(CENTER);
-    text(styleSpec.center[1].toFixed(3), -300, 147);
-  } else {
-    text(0, -445, 147);
-    textAlign(CENTER);
-    text(0, -300, 147);
+  if(!checker1){
+    //Add Coordinates
+    textFont(folio);
+    push();
+    rotate(-90);
+    textSize(14.5);
+    if (styleSpec) {
+      text(styleSpec.center[0].toFixed(3), -445, 147);
+      textAlign(CENTER);
+      text(styleSpec.center[1].toFixed(3), -300, 147);
+    } else {
+      text(0, -445, 147);
+      textAlign(CENTER);
+      text(0, -300, 147);
+    }
+    textAlign(RIGHT);
+    text(elevation, -150, 147);
+    pop();
   }
-  textAlign(RIGHT);
-  text(elevation, -150, 147);
-  pop();
 }
 
-function noTextLogo() {
-  lastvalue = selector.value();
-  hasinput = true;
-  clear();
-
-  if (styleSpec) {
-    if (styleSpec.center[1]) {
-      lastlat = styleSpec.center[1];
-    }
-    if (styleSpec.center[0]) {
-      lastlon = styleSpec.center[0];
-    }
-  } else {
-    lastlat = 0;
-    lastlon = 0;
-  }
-
-  if (elevation) {
-    lastalt = elevation;
-  }
-
-  r1 = checkFirstNumber(lastlat, r1, true);
-  r2 = checkFirstNumber(lastlon, r2, true);
-  r3 = checkFirstNumber(lastalt, r3, false);
-
-  //Create Logo
-  image(circles[r3], 300, 300, 600, 600);
-  checkTriangle();
-  image(semiCircles[r2], 300, 300, 600, 600);
-}
-
-function randomizeLogo() {
+/*function randomizeLogo() {
   hasinput = true;
   clear();
 
@@ -257,14 +230,13 @@ function randomizeLogo() {
   text(lastalt, -150, 147);
   pop();
 }
-
+*/
 function checkFirstNumber(coordinate, r, n) {
   var cordfirst1 = coordinate;
   if (n) {
     cordfirst1 = (coordinate - floor(coordinate)) * 100;
   }
   const cordfirst2 = str(cordfirst1).charAt(1);
-  console.log(cordfirst1);
   const cordfirst3 = Number(cordfirst2);
   if (cordfirst3 > -1 || cordfirst3 < 10) {
     return cordfirst3;
@@ -281,9 +253,10 @@ function windowResized() {
   clear();
   randButton.remove();
   selector.remove();
-  checkbox.remove();
+  checkbox1.remove();
+  checkbox2.remove();
 
-  if(checker == false){
+  if(checker1 == false){
     //Add Coordinates
     textFont(folio);
     push();
@@ -305,10 +278,15 @@ function windowResized() {
     pop();
   }
 
-  //Create checkbox
-  checkbox = createCheckbox('rimuovi testo', checker);
-  checkbox.changed(myCheckedEvent);
-  checkbox.position(windowWidth / 10, windowHeight / 1.3);
+  //Create checkbox 1
+  checkbox1 = createCheckbox('rimuovi coordinate', checker1);
+  checkbox1.changed(myCheckedEvent1);
+  checkbox1.position(windowWidth / 10, windowHeight / 1.3);
+
+  //Create checkbox 2
+  checkbox2 = createCheckbox('rimuovi nome', checker2);
+  checkbox2.changed(myCheckedEvent2);
+  checkbox2.position(windowWidth / 10, windowHeight / 1.25);
 
   //Create type selector
   selector = createSelect();
@@ -371,18 +349,11 @@ function windowResized() {
     saveButton.mousePressed(randomizeLogo);
   */
 
-  if(checker == true){
-    //Create no text Logo
-    image(circles[r2], 300, 300, 600, 600);
-    checkTriangle();
-    image(semiCircles[r3], 300, 300, 600, 600);
-  } else{
-    //Create Logo
-    image(circles[r2], 300, 300, 600, 600);
-    checkTriangle();
-    image(semiCircles[r3], 300, 300, 600, 600);
-    image(logoName, 300, 300, 600, 600);
-  }
+  //Create Logo
+  image(circles[r3], 300, 300, 600, 600);
+  checkTriangle();
+  image(semiCircles[r2], 300, 300, 600, 600);
+  if(!checker2){image(logoName, 300, 300, 600, 600);}
 }
 
 function addInputPlaceholder(hasinput) {
@@ -434,14 +405,22 @@ function checkTriangle() {
   }
 }
 
-function myCheckedEvent() {
+function myCheckedEvent1() {
   if (this.checked()) {
-    noTextLogo();
-    checker = true;
+    checker1 = true;
   } else {
-    changeLogo();
-    checker = false;
+    checker1 = false;
   }
+  changeLogo();
+}
+
+function myCheckedEvent2() {
+  if (this.checked()) {
+    checker2 = true;
+  } else {
+    checker2 = false;
+  }
+  changeLogo();
 }
 
 function getElevation(lng, lat) {
@@ -463,11 +442,7 @@ function getElevation(lng, lat) {
     var highestElevation = Math.max(...elevations);
     // Display the largest elevation value
     elevation = highestElevation;
-    if(checker == true){
-      noTextLogo();
-    } else{
-      changeLogo();
-    }
+    changeLogo();
   });
 }
 

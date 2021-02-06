@@ -51,7 +51,12 @@ function loader(name, num) {
 }
 
 function setup() {
-  myCanvas = createCanvas(600, 600);
+  if($("#map").css("opacity") == "0.99"){
+    myCanvas = createCanvas(300, 300);
+  } else{
+    myCanvas = createCanvas(600, 600);
+  }
+
   myCanvas.parent("logo");
   //Create Grid
   rectMode(CENTER);
@@ -64,23 +69,40 @@ function setup() {
   textFont(folio);
   push();
   rotate(-90);
-  textSize(14.5);
-  text('0', -445, 147);
-  textAlign(CENTER);
-  text('0', -300, 147);
-  textAlign(RIGHT);
-  text('0', -150, 147);
+  if($("#map").css("opacity") == "0.99"){
+    textSize(7.25);
+    text('0', -222.5, 73.5);
+    textAlign(CENTER);
+    text('0', -150, 73.5);
+    textAlign(RIGHT);
+    text('0', -70, 73.5);
+  } else{
+    textSize(14.5);
+    text('0', -445, 147);
+    textAlign(CENTER);
+    text('0', -300, 147);
+    textAlign(RIGHT);
+    text('0', -150, 147);
+  }
   pop();
 
   //Create checkbox 1
   checkbox1 = createCheckbox('rimuovi coordinate', checker1);
   checkbox1.changed(myCheckedEvent1);
-  checkbox1.position(windowWidth / 10, windowHeight / 1.3);
+  if($("#map").css("opacity") == "0.99"){
+    checkbox1.position(20, windowHeight * 0.95);
+  } else{
+    checkbox1.position(windowWidth / 10, windowHeight / 1.3);
+  }
 
   //Create checkbox 2
   checkbox2 = createCheckbox('rimuovi nome', checker2);
   checkbox2.changed(myCheckedEvent2);
-  checkbox2.position(windowWidth / 10, windowHeight / 1.25);
+  if($("#map").css("opacity") == "0.99"){
+    checkbox2.position(windowWidth / 2, windowHeight * 0.95);
+  } else{
+    checkbox2.position(windowWidth / 10, windowHeight / 1.25);
+  }
 
   //Create type selector
   selector = createSelect();
@@ -102,8 +124,14 @@ function setup() {
   });
   selector.parent("selecto");
 
-  selector.size(windowWidth / 5.9, 30);
-  selector.position(windowWidth / 4.7, windowHeight / 1.44);
+  if($("#map").css("opacity") == "0.99"){
+    selector.position(windowWidth / 2, windowHeight * 0.86);
+    selector.size(windowWidth / 2.5, 40);
+  } else{
+    selector.size(windowWidth / 5.9, 30);
+    selector.position(windowWidth / 4.7, windowHeight / 1.44);
+  }
+
   /*
     //Create latitude input
     latitude = createInput();
@@ -130,9 +158,16 @@ function setup() {
   */
   //Create Button to save
   randButton = createButton('Salva');
-  randButton.size(windowWidth / 15, 30);
-  randButton.position(windowWidth / 10, windowHeight / 1.44);
   randButton.mousePressed(saveLogo);
+
+  if($("#map").css("opacity") == "0.99"){
+    randButton.size(windowWidth / 2.5, 40);
+    randButton.position(20, windowHeight * 0.86);
+  } else{
+    randButton.size(windowWidth / 15, 30);
+    randButton.position(windowWidth / 10, windowHeight / 1.44);
+  }
+
   /*
     //Create Button to randomize
     saveButton = createButton('Randomizza');
@@ -141,11 +176,19 @@ function setup() {
     saveButton.mousePressed(randomizeLogo);
   */
 
-  //Create Logo
-  image(circles[0], 300, 300, 600, 600);
-  checkTriangle();
-  image(semiCircles[0], 300, 300, 600, 600);
-  image(logoName, 300, 300, 600, 600);
+  if($("#map").css("opacity") == "0.99"){
+    //Create Mobile Logo
+    image(circles[0], 150, 150, 300, 300);
+    checkTriangle();
+    image(semiCircles[0], 150, 150, 300, 300);
+    image(logoName, 150, 150, 300, 300);
+  } else{
+    //Create Logo
+    image(circles[0], 300, 300, 600, 600);
+    checkTriangle();
+    image(semiCircles[0], 300, 300, 600, 600);
+    image(logoName, 300, 300, 600, 600);
+  }
 }
 
 function changeLogo() {
@@ -173,28 +216,53 @@ function changeLogo() {
   r3 = checkFirstNumber(lastalt, r3, false);
 
   //Create Logo
-  image(circles[r3], 300, 300, 600, 600);
-  checkTriangle();
-  image(semiCircles[r2], 300, 300, 600, 600);
-  if(!checker2){image(logoName, 300, 300, 600, 600);}
+  if($("#map").css("opacity") == "0.99"){
+    //Create Mobile Logo
+    image(circles[r3], 150, 150, 300, 300);
+    checkTriangle();
+    image(semiCircles[r2], 150, 150, 300, 300);
+    if(!checker2){image(logoName, 150, 150, 300, 300);}
+  } else{
+    //Create Logo
+    image(circles[r3], 300, 300, 600, 600);
+    checkTriangle();
+    image(semiCircles[r2], 300, 300, 600, 600);
+    if(!checker2){image(logoName, 300, 300, 600, 600);}
+  }
 
   if(!checker1){
     //Add Coordinates
     textFont(folio);
     push();
     rotate(-90);
-    textSize(14.5);
-    if (styleSpec) {
-      text(styleSpec.center[0].toFixed(3), -445, 147);
-      textAlign(CENTER);
-      text(styleSpec.center[1].toFixed(3), -300, 147);
-    } else {
-      text(0, -445, 147);
-      textAlign(CENTER);
-      text(0, -300, 147);
+    if($("#map").css("opacity") == "0.99"){
+      textSize(7.25);
+      if (styleSpec) {
+        text(styleSpec.center[0].toFixed(3), -222.5, 73.5);
+        textAlign(CENTER);
+        text(styleSpec.center[1].toFixed(3), -150, 73.5);
+      } else {
+        text(0, -222.5, 73.5);
+        textAlign(CENTER);
+        text(0, -150, 73.5);
+
+      }
+      textAlign(RIGHT);
+      text(elevation, -75, 73.5);
+    } else{
+      textSize(14.5);
+      if (styleSpec) {
+        text(styleSpec.center[0].toFixed(3), -445, 147);
+        textAlign(CENTER);
+        text(styleSpec.center[1].toFixed(3), -300, 147);
+      } else {
+        text(0, -445, 147);
+        textAlign(CENTER);
+        text(0, -300, 147);
+      }
+      textAlign(RIGHT);
+      text(elevation, -150, 147);
     }
-    textAlign(RIGHT);
-    text(elevation, -150, 147);
     pop();
   }
 }
@@ -261,32 +329,54 @@ function windowResized() {
     textFont(folio);
     push();
     rotate(-90);
-    textSize(14.5);
-    if (lastlon.countDecimals() < 3) {
-      text(lastlon, -445, 147)
-    } else {
-      text(lastlon.toFixed(3), -445, 147);
+    if($("#map").css("opacity") == "0.99"){
+      textSize(7.25);
+      if (styleSpec) {
+        text(styleSpec.center[0].toFixed(3), -222.5, 73.5);
+        textAlign(CENTER);
+        text(styleSpec.center[1].toFixed(3), -150, 73.5);
+      } else {
+        text(0, -222.5, 73.5);
+        textAlign(CENTER);
+        text(0, -150, 73.5);
+
+      }
+      textAlign(RIGHT);
+      text(elevation, -75, 73.5);
+    } else{
+      textSize(14.5);
+      if (styleSpec) {
+        text(styleSpec.center[0].toFixed(3), -445, 147);
+        textAlign(CENTER);
+        text(styleSpec.center[1].toFixed(3), -300, 147);
+      } else {
+        text(0, -445, 147);
+        textAlign(CENTER);
+        text(0, -300, 147);
+      }
+      textAlign(RIGHT);
+      text(elevation, -150, 147);
     }
-    textAlign(CENTER);
-    if (lastlat.countDecimals() < 3) {
-      text(lastlat, -300, 147)
-    } else {
-      text(lastlat.toFixed(3), -300, 147);
-    }
-    textAlign(RIGHT);
-    text(lastalt, -150, 147);
     pop();
   }
 
   //Create checkbox 1
   checkbox1 = createCheckbox('rimuovi coordinate', checker1);
   checkbox1.changed(myCheckedEvent1);
-  checkbox1.position(windowWidth / 10, windowHeight / 1.3);
+  if($("#map").css("opacity") == "0.99"){
+    checkbox1.position(20, windowHeight * 0.95);
+  } else{
+    checkbox1.position(windowWidth / 10, windowHeight / 1.3);
+  }
 
   //Create checkbox 2
   checkbox2 = createCheckbox('rimuovi nome', checker2);
   checkbox2.changed(myCheckedEvent2);
-  checkbox2.position(windowWidth / 10, windowHeight / 1.25);
+  if($("#map").css("opacity") == "0.99"){
+    checkbox2.position(windowWidth / 2, windowHeight * 0.95);
+  } else{
+    checkbox2.position(windowWidth / 10, windowHeight / 1.25);
+  }
 
   //Create type selector
   selector = createSelect();
@@ -301,8 +391,13 @@ function windowResized() {
   selector.option('Spazi espositivi');
   selector.option('Spazi indipendenti');
   selector.selected(lastvalue);
-  selector.size(windowWidth / 5.9, 30);
-  selector.position(windowWidth / 3.9, windowHeight / 1.44);
+  if($("#map").css("opacity") == "0.99"){
+    selector.position(windowWidth / 2, windowHeight * 0.86);
+    selector.size(windowWidth / 2.5, 40);
+  } else{
+    selector.size(windowWidth / 5.9, 30);
+    selector.position(windowWidth / 4.7, windowHeight / 1.44);
+  }
   selector.id('aidi');
   selector.changed(function(){
     if(checker == true){
@@ -338,8 +433,13 @@ function windowResized() {
   */
   //Create Button to save
   randButton = createButton('Salva');
-  randButton.size(windowWidth / 15, 30);
-  randButton.position(windowWidth / 10, windowHeight / 1.44);
+  if($("#map").css("opacity") == "0.99"){
+    randButton.size(windowWidth / 2.5, 40);
+    randButton.position(20, windowHeight * 0.86);
+  } else{
+    randButton.size(windowWidth / 15, 30);
+    randButton.position(windowWidth / 10, windowHeight / 1.44);
+  }
   randButton.mousePressed(saveLogo);
   /*
     //Create Button to randomize
@@ -349,11 +449,19 @@ function windowResized() {
     saveButton.mousePressed(randomizeLogo);
   */
 
-  //Create Logo
-  image(circles[r3], 300, 300, 600, 600);
-  checkTriangle();
-  image(semiCircles[r2], 300, 300, 600, 600);
-  if(!checker2){image(logoName, 300, 300, 600, 600);}
+  if($("#map").css("opacity") == "0.99"){
+    //Create Mobile Logo
+    image(circles[0], 150, 150, 300, 300);
+    checkTriangle();
+    image(semiCircles[0], 150, 150, 300, 300);
+    image(logoName, 150, 150, 300, 300);
+  } else{
+    //Create Logo
+    image(circles[0], 300, 300, 600, 600);
+    checkTriangle();
+    image(semiCircles[0], 300, 300, 600, 600);
+    image(logoName, 300, 300, 600, 600);
+  }
 }
 
 function addInputPlaceholder(hasinput) {
@@ -383,25 +491,35 @@ function addInputPlaceholder(hasinput) {
 
 function checkTriangle() {
   if (selector.value() == 'Arte negli spazi pubblici') {
-    image(trianglesone[r1], 300, 300, 600, 600);
+    if($("#map").css("opacity") == "0.99"){image(trianglesone[r1], 150, 150, 300, 300);}
+    else{image(trianglesone[r1], 300, 300, 600, 600);}
   } else if (selector.value() == 'Associazioni') {
-    image(trianglestwo[r1], 300, 300, 600, 600);
+    if($("#map").css("opacity") == "0.99"){image(trianglestwo[r1], 150, 150, 300, 300);}
+    else{image(trianglestwo[r1], 300, 300, 600, 600);}
   } else if (selector.value() == 'Collezioni') {
-    image(trianglesthree[r1], 300, 300, 600, 600);
+    if($("#map").css("opacity") == "0.99"){image(trianglesthree[r1], 150, 150, 300, 300);}
+    else{image(trianglesthree[r1], 300, 300, 600, 600);}
   } else if (selector.value() == 'Fondazioni') {
-    image(trianglesfour[r1], 300, 300, 600, 600);
+    if($("#map").css("opacity") == "0.99"){image(trianglesfour[r1], 150, 150, 300, 300);}
+    else{image(trianglesfour[r1], 300, 300, 600, 600);}
   } else if (selector.value() == 'Istituti esteri') {
-    image(trianglesfive[r1], 300, 300, 600, 600);
+    if($("#map").css("opacity") == "0.99"){image(trianglesfive[r1], 150, 150, 300, 300);}
+    else{image(trianglesfive[r1], 300, 300, 600, 600);}
   } else if (selector.value() == 'Musei') {
-    image(trianglessix[r1], 300, 300, 600, 600);
+    if($("#map").css("opacity") == "0.99"){image(trianglessix[r1], 150, 150, 300, 300);}
+    else{image(trianglessix[r1], 300, 300, 600, 600);}
   } else if (selector.value() == 'Musei aziendali e d\'impresa') {
-    image(trianglesseven[r1], 300, 300, 600, 600);
+    if($("#map").css("opacity") == "0.99"){image(trianglesseven[r1], 150, 150, 300, 300);}
+    else{image(trianglesseven[r1], 300, 300, 600, 600);}
   } else if (selector.value() == 'Parchi e Giardini') {
-    image(triangleseight[r1], 300, 300, 600, 600);
+    if($("#map").css("opacity") == "0.99"){image(triangleseight[r1], 150, 150, 300, 300);}
+    else{image(triangleseight[r1], 300, 300, 600, 600);}
   } else if (selector.value() == 'Spazi espositivi') {
-    image(trianglesnine[r1], 300, 300, 600, 600);
+    if($("#map").css("opacity") == "0.99"){image(trianglesnine[r1], 150, 150, 300, 300);}
+    else{image(trianglesnine[r1], 300, 300, 600, 600);}
   } else if (selector.value() == 'Spazi indipendenti') {
-    image(trianglesten[r1], 300, 300, 600, 600);
+    if($("#map").css("opacity") == "0.99"){image(trianglesten[r1], 150, 150, 300, 300);}
+    else{image(trianglesten[r1], 300, 300, 600, 600);}
   }
 }
 

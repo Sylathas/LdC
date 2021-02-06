@@ -566,32 +566,34 @@ function getElevation(lng, lat) {
 
 //mapbox
 
-mapboxgl.accessToken = 'pk.eyJ1Ijoic3lsYXRoYXMiLCJhIjoiY2szNzF1ZTR5MDc5MzNtbnM0dmwzNzdyMCJ9.EN7o0z5fjNZqb_aQFTe8vg';
-var map = new mapboxgl.Map({
-  container: 'map', // Specify the container ID
-  style: 'mapbox://styles/sylathas/ckkr3cciz03ki17o5h402418c', // Specify which map style to use
-  center: [12.5736108, 41.29246], // Specify the starting position [lng, lat]
-  zoom: 5 // Specify the starting zoom
-});
-
-var geocoder = new MapboxGeocoder({
-  accessToken: mapboxgl.accessToken,
-  marker: {
-    color: 'gray'
-  },
-  mapboxgl: mapboxgl
-});
-
-map.addControl(geocoder, 'top-left');
-
-map.on('load', function() {
-  // Listen for the `geocoder.input` event that is triggered when a user
-  // makes a selection
-  geocoder.on('result', function(ev) {
-    styleSpec = ev.result;
-    getElevation(styleSpec.center[0], styleSpec.center[1]);
+if($("#map").css("opacity") != "0.99"){
+  mapboxgl.accessToken = 'pk.eyJ1Ijoic3lsYXRoYXMiLCJhIjoiY2szNzF1ZTR5MDc5MzNtbnM0dmwzNzdyMCJ9.EN7o0z5fjNZqb_aQFTe8vg';
+  var map = new mapboxgl.Map({
+    container: 'map', // Specify the container ID
+    style: 'mapbox://styles/sylathas/ckkr3cciz03ki17o5h402418c', // Specify which map style to use
+    center: [12.5736108, 41.29246], // Specify the starting position [lng, lat]
+    zoom: 5 // Specify the starting zoom
   });
-});
+
+  var geocoder = new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken,
+    marker: {
+      color: 'gray'
+    },
+    mapboxgl: mapboxgl
+  });
+
+  map.addControl(geocoder, 'top-left');
+
+  map.on('load', function() {
+    // Listen for the `geocoder.input` event that is triggered when a user
+    // makes a selection
+    geocoder.on('result', function(ev) {
+      styleSpec = ev.result;
+      getElevation(styleSpec.center[0], styleSpec.center[1]);
+    });
+  });
+}
 
 Number.prototype.countDecimals = function() {
   if (Math.floor(this.valueOf()) === this.valueOf()) return 0;

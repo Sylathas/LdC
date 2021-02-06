@@ -51,9 +51,8 @@ function loader(name, num) {
 }
 
 function setup() {
-  console.log(windowWidth, windowHeight);
   if(windowWidth < 480){
-    //myCanvas = createCanvas(300, 300);
+    myCanvas = createCanvas(300, 300);
   } else{
     myCanvas = createCanvas(600, 600);
   }
@@ -567,7 +566,7 @@ function getElevation(lng, lat) {
 
 //mapbox
 
-if($("#map").css("opacity") != "0.99"){
+/*f($("#map").css("opacity") != "0.99"){
   console.log("ciao");
   mapboxgl.accessToken = 'pk.eyJ1Ijoic3lsYXRoYXMiLCJhIjoiY2szNzF1ZTR5MDc5MzNtbnM0dmwzNzdyMCJ9.EN7o0z5fjNZqb_aQFTe8vg';
   var map = new mapboxgl.Map({
@@ -595,7 +594,7 @@ if($("#map").css("opacity") != "0.99"){
       getElevation(styleSpec.center[0], styleSpec.center[1]);
     });
   });
-}
+}*/
 
 Number.prototype.countDecimals = function() {
   if (Math.floor(this.valueOf()) === this.valueOf()) return 0;

@@ -51,7 +51,8 @@ function loader(name, num) {
 }
 
 function setup() {
-  if($("#map").css("opacity") == "0.99"){
+  console.log(windowWidth, windowHeight);
+  if(windowWidth < 480){
     //myCanvas = createCanvas(300, 300);
   } else{
     myCanvas = createCanvas(600, 600);

@@ -567,6 +567,7 @@ function getElevation(lng, lat) {
 //mapbox
 
 if($("#map").css("opacity") != "0.99"){
+  console.log("ciao");
   mapboxgl.accessToken = 'pk.eyJ1Ijoic3lsYXRoYXMiLCJhIjoiY2szNzF1ZTR5MDc5MzNtbnM0dmwzNzdyMCJ9.EN7o0z5fjNZqb_aQFTe8vg';
   var map = new mapboxgl.Map({
     container: 'map', // Specify the container ID

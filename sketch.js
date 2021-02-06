@@ -400,7 +400,7 @@ function windowResized() {
   }
   selector.id('aidi');
   selector.changed(function(){
-    if(checker == true){
+    if(checker1 == true){
       noTextLogo();
     } else{
       changeLogo();

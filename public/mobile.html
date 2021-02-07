@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+  <title>LdC Logo Generator</title>
+</head>
+
+<body>
+  <main>
+    <img class="logo" src="./assets/logo.png">
+    <p class="testo">Questa web-app è utilizzabile solo da Desktop</p>
+  </main>
+</body>
+<style>
+  @font-face {
+    font-family: folio;
+    src: url('./assets/DMSans-Regular.ttf');
+  }
+  .logo{
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    transform: translate(-50%,0);
+    width: 30vw;
+    height: 30vw;
+  }
+  .testo{
+    font-family: folio;
+    position: absolute;
+    top: 50%;
+    text-align: center;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 20px;
+  }
+</style>
+
+</html>

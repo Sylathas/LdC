@@ -33,15 +33,17 @@ function loader(name, num) {
   for (let i = 0; i < num; i++) {
     if (name === 'T') {
       trianglesone.push(loadImage('assets/triangle/00/T0' + i + '.png'));
-      trianglestwo.push(loadImage('assets/triangle/01/T0' + i + '.png'));
-      trianglesthree.push(loadImage('assets/triangle/02/T0' + i + '.png'));
-      trianglesfour.push(loadImage('assets/triangle/03/T0' + i + '.png'));
-      trianglesfive.push(loadImage('assets/triangle/04/T0' + i + '.png'));
-      trianglessix.push(loadImage('assets/triangle/05/T0' + i + '.png'));
-      trianglesseven.push(loadImage('assets/triangle/06/T0' + i + '.png'));
-      triangleseight.push(loadImage('assets/triangle/07/T0' + i + '.png'));
-      trianglesnine.push(loadImage('assets/triangle/08/T0' + i + '.png'));
-      trianglesten.push(loadImage('assets/triangle/09/T0' + i + '.png'));
+      if($("#map").css("opacity") == "1"){
+        trianglestwo.push(loadImage('assets/triangle/01/T0' + i + '.png'));
+        trianglesthree.push(loadImage('assets/triangle/02/T0' + i + '.png'));
+        trianglesfour.push(loadImage('assets/triangle/03/T0' + i + '.png'));
+        trianglesfive.push(loadImage('assets/triangle/04/T0' + i + '.png'));
+        trianglessix.push(loadImage('assets/triangle/05/T0' + i + '.png'));
+        trianglesseven.push(loadImage('assets/triangle/06/T0' + i + '.png'));
+        triangleseight.push(loadImage('assets/triangle/07/T0' + i + '.png'));
+        trianglesnine.push(loadImage('assets/triangle/08/T0' + i + '.png'));
+        trianglesten.push(loadImage('assets/triangle/09/T0' + i + '.png'));
+      }
     } else if (name === 'C') {
       circles.push(loadImage('assets/circle/C0' + i + '.png'));
     } else if (name === 'SC') {
@@ -105,29 +107,25 @@ function setup() {
   }
 
   //Create type selector
-  selector = createSelect();
-  selector.option('Arte negli spazi pubblici');
-  selector.option('Associazioni');
-  selector.option('Collezioni');
-  selector.option('Fondazioni');
-  selector.option('Istituti esteri');
-  selector.option('Musei');
-  selector.option('Musei aziendali e d\'impresa');
-  selector.option('Parchi e Giardini');
-  selector.option('Spazi espositivi');
-  selector.option('Spazi indipendenti');
-  selector.selected('Arte negli spazi pubblici');
-  selector.id('aidi');
-  lastvalue = selector.value();
-  selector.changed(function(){
-    changeLogo();
-  });
-  selector.parent("selecto");
-
-  if($("#map").css("opacity") == "0.99"){
-    selector.position(windowWidth / 2, windowHeight * 0.86);
-    selector.size(windowWidth / 2.5, 40);
-  } else{
+  if($("#map").css("opacity") == "1"){
+    selector = createSelect();
+    selector.option('Arte negli spazi pubblici');
+    selector.option('Associazioni');
+    selector.option('Collezioni');
+    selector.option('Fondazioni');
+    selector.option('Istituti esteri');
+    selector.option('Musei');
+    selector.option('Musei aziendali e d\'impresa');
+    selector.option('Parchi e Giardini');
+    selector.option('Spazi espositivi');
+    selector.option('Spazi indipendenti');
+    selector.selected('Arte negli spazi pubblici');
+    selector.id('aidi');
+    lastvalue = selector.value();
+    selector.changed(function(){
+      changeLogo();
+    });
+    selector.parent("selecto");
     selector.size(windowWidth / 5.9, 30);
     selector.position(windowWidth / 4.7, windowHeight / 1.44);
   }
@@ -161,7 +159,7 @@ function setup() {
   randButton.mousePressed(saveLogo);
 
   if($("#map").css("opacity") == "0.99"){
-    randButton.size(windowWidth / 2.5, 40);
+    randButton.size(windowWidth / 2.1, 40);
     randButton.position(20, windowHeight * 0.86);
   } else{
     randButton.size(windowWidth / 15, 30);
@@ -179,7 +177,7 @@ function setup() {
   if($("#map").css("opacity") == "0.99"){
     //Create Mobile Logo
     image(circles[0], 150, 150, 300, 300);
-    checkTriangle();
+    image(trianglesone[0], 150, 150, 300, 300);
     image(semiCircles[0], 150, 150, 300, 300);
     image(logoName, 150, 150, 300, 300);
   } else{
@@ -219,7 +217,7 @@ function changeLogo() {
   if($("#map").css("opacity") == "0.99"){
     //Create Mobile Logo
     image(circles[r3], 150, 150, 300, 300);
-    checkTriangle();
+    image(trianglesone[r1], 150, 150, 300, 300);
     image(semiCircles[r2], 150, 150, 300, 300);
     if(!checker2){image(logoName, 150, 150, 300, 300);}
   } else{
@@ -320,7 +318,7 @@ function saveLogo() {
 function windowResized() {
   clear();
   randButton.remove();
-  selector.remove();
+  if($("#map").css("opacity") == "1"){selector.remove();}
   checkbox1.remove();
   checkbox2.remove();
 
@@ -378,34 +376,32 @@ function windowResized() {
     checkbox2.position(windowWidth / 10, windowHeight / 1.25);
   }
 
-  //Create type selector
-  selector = createSelect();
-  selector.option('Arte negli spazi pubblici');
-  selector.option('Associazioni');
-  selector.option('Collezioni');
-  selector.option('Fondazioni');
-  selector.option('Istituti esteri');
-  selector.option('Musei');
-  selector.option('Musei aziendali e d\'impresa');
-  selector.option('Parchi e Giardini');
-  selector.option('Spazi espositivi');
-  selector.option('Spazi indipendenti');
-  selector.selected(lastvalue);
-  if($("#map").css("opacity") == "0.99"){
-    selector.position(windowWidth / 2, windowHeight * 0.86);
-    selector.size(windowWidth / 2.5, 40);
-  } else{
-    selector.size(windowWidth / 5.9, 30);
-    selector.position(windowWidth / 4.7, windowHeight / 1.44);
-  }
-  selector.id('aidi');
-  selector.changed(function(){
-    if(checker1 == true){
-      noTextLogo();
+  if($("#map").css("opacity") == "1"){
+    //Create type selector
+    selector = createSelect();
+    selector.option('Arte negli spazi pubblici');
+    selector.option('Associazioni');
+    selector.option('Collezioni');
+    selector.option('Fondazioni');
+    selector.option('Istituti esteri');
+    selector.option('Musei');
+    selector.option('Musei aziendali e d\'impresa');
+    selector.option('Parchi e Giardini');
+    selector.option('Spazi espositivi');
+    selector.option('Spazi indipendenti');
+    selector.selected(lastvalue);
+    if($("#map").css("opacity") == "0.99"){
+      selector.position(windowWidth / 2, windowHeight * 0.86);
+      selector.size(windowWidth / 2.5, 40);
     } else{
-      changeLogo();
+      selector.size(windowWidth / 5.9, 30);
+      selector.position(windowWidth / 4.7, windowHeight / 1.44);
     }
-  });
+    selector.id('aidi');
+    selector.changed(function(){
+      changeLogo();
+    });
+  }
   selector.parent("selecto");
   /*
     //Create latitude input
@@ -434,7 +430,7 @@ function windowResized() {
   //Create Button to save
   randButton = createButton('Salva');
   if($("#map").css("opacity") == "0.99"){
-    randButton.size(windowWidth / 2.5, 40);
+    randButton.size(windowWidth / 2.1, 40);
     randButton.position(20, windowHeight * 0.86);
   } else{
     randButton.size(windowWidth / 15, 30);
@@ -452,7 +448,7 @@ function windowResized() {
   if($("#map").css("opacity") == "0.99"){
     //Create Mobile Logo
     image(circles[0], 150, 150, 300, 300);
-    checkTriangle();
+    image(trianglesone[0], 150, 150, 300, 300);
     image(semiCircles[0], 150, 150, 300, 300);
     image(logoName, 150, 150, 300, 300);
   } else{
@@ -566,8 +562,6 @@ function getElevation(lng, lat) {
 
 //mapbox
 
-/*f($("#map").css("opacity") != "0.99"){
-  console.log("ciao");
   mapboxgl.accessToken = 'pk.eyJ1Ijoic3lsYXRoYXMiLCJhIjoiY2szNzF1ZTR5MDc5MzNtbnM0dmwzNzdyMCJ9.EN7o0z5fjNZqb_aQFTe8vg';
   var map = new mapboxgl.Map({
     container: 'map', // Specify the container ID
@@ -594,7 +588,6 @@ function getElevation(lng, lat) {
       getElevation(styleSpec.center[0], styleSpec.center[1]);
     });
   });
-}*/
 
 Number.prototype.countDecimals = function() {
   if (Math.floor(this.valueOf()) === this.valueOf()) return 0;
